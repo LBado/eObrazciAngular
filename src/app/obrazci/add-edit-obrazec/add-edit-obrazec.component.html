@@ -1,0 +1,314 @@
+<form [formGroup]="obrazecForm" (ngSubmit)="submitForm()" #pdfForm id="pdfForm">
+  <div class="row obrazec-form">
+    <div class="col student">
+      <!-- Obrazec -->
+      <div class="input-group" *ngIf="obrazecData.id != 0">
+        <input
+          placeholder="Obrazec Id"
+          type="number"
+          class="form-control"
+          name="obrazecId"
+          formControlName="obrazecId"
+        />
+      </div>
+      <!-- Student -->
+      <div class="input-group" *ngIf="obrazecData.id != 0">
+        <input
+          placeholder="Študent Id"
+          type="number"
+          class="form-control"
+          name="studentId"
+          formControlName="studentId"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Ime"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger': ime.invalid && (ime.dirty || ime.touched)
+          }"
+          name="ime"
+          formControlName="ime"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Priimek"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              priimek.invalid && (priimek.dirty || priimek.touched)
+          }"
+          formControlName="priimek"
+          name="priimek"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Spol"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger': spol.invalid && (spol.dirty || spol.touched)
+          }"
+          name="spol"
+          formControlName="spol"
+          *ngIf="obrazecData.id != 0"
+        />
+        <select
+          name="spol"
+          id="spol"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger': spol.invalid && (spol.dirty || spol.touched)
+          }"
+          formControlName="spol"
+          *ngIf="obrazecData.id == 0"
+        >
+          <option value="" disabled hidden>Spol</option>
+          <option *ngFor="let spol of formSpolList" [value]="spol">
+            {{ spol }}
+          </option>
+        </select>
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Datum rojstva"
+          type="date"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              datumRoj.invalid && (datumRoj.dirty || datumRoj.touched)
+          }"
+          formControlName="datumRoj"
+          name="datumRoj"
+        />
+      </div>
+    </div>
+    <div class="col naslov">
+      <!-- Naslov -->
+      <div class="input-group" *ngIf="obrazecData.id != 0">
+        <input
+          placeholder="Naslov Id"
+          type="number"
+          class="form-control"
+          formControlName="naslovId"
+          name="naslovId"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Ulica"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              ulica.invalid && (ulica.dirty || ulica.touched)
+          }"
+          formControlName="ulica"
+          name="ulica"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Hišna številka"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              hisnaSt.invalid && (hisnaSt.dirty || hisnaSt.touched)
+          }"
+          formControlName="hisnaSt"
+          name="hisnaSt"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Poštna številka"
+          type="number"
+          min="1000"
+          max="9999"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              postnaSt.invalid && (postnaSt.dirty || postnaSt.touched)
+          }"
+          formControlName="postnaSt"
+          name="postnaSt"
+        />
+      </div>
+      <div class="input-group">
+        <input
+          placeholder="Kraj"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger': kraj.invalid && (kraj.dirty || kraj.touched)
+          }"
+          formControlName="kraj"
+          name="kraj"
+        />
+      </div>
+      <div
+        class="input-group"
+        matAutocompleteOrigin
+        #origin="matAutocompleteOrigin"
+      >
+        <input
+          maxlength="2"
+          placeholder="Država"
+          type="text"
+          [ngClass]="{
+            'form-control': true,
+            'alert alert-danger':
+              drzava.invalid && (drzava.dirty || drzava.touched)
+          }"
+          formControlName="drzava"
+          name="drzava"
+          [matAutocomplete]="auto"
+          [matAutocompleteConnectedTo]="origin"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let country of filteredCountries | async"
+            [value]="country"
+          >
+            {{ country }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+    </div>
+  </div>
+  <!-- Izpiti -->
+  <ng-container formArrayName="izpiti">
+    <ng-container *ngFor="let izpitForm of izpiti.controls; let i = index">
+      <div class="izpit" [formGroupName]="i">
+        <div class="input-group" *ngIf="obrazecData.id != 0">
+          <input
+            placeholder="Izpit Id"
+            type="number"
+            class="form-control"
+            formControlName="id"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            placeholder="Naziv"
+            type="text"
+            [ngClass]="{
+              'form-control': true,
+              'alert alert-danger':
+                izpiti.controls[i].get('naziv')!.invalid &&
+                (izpiti.controls[i].get('naziv')!.dirty ||
+                  izpiti.controls[i].get('naziv')!.touched)
+            }"
+            formControlName="naziv"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            placeholder="Datum opr. izpita"
+            type="date"
+            [ngClass]="{
+              'form-control': true,
+              'alert alert-danger':
+                izpiti.controls[i].get('datumOprIzpita')!.invalid &&
+                (izpiti.controls[i].get('datumOprIzpita')!.dirty ||
+                  izpiti.controls[i].get('datumOprIzpita')!.touched)
+            }"
+            formControlName="datumOprIzpita"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            placeholder="Ocena"
+            type="number"
+            min="1"
+            max="10"
+            [ngClass]="{
+              'form-control': true,
+              'alert alert-danger':
+                izpiti.controls[i].get('ocena')!.invalid &&
+                (izpiti.controls[i].get('ocena')!.dirty ||
+                  izpiti.controls[i].get('ocena')!.touched)
+            }"
+            formControlName="ocena"
+          />
+        </div>
+        <button
+          type="button"
+          class="remove-izpit-one btn btn-outline-danger"
+          (click)="removeIzpit(i)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-dash-circle-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"
+            />
+          </svg>
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
+  <!-- Add remove izpit -->
+  <div class="izpitButtons">
+    <button
+      type="button"
+      class="remove-izpit btn btn-outline-danger"
+      (click)="removeLastIzpit()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-dash-circle-fill"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"
+        />
+      </svg>
+      Odstrani zadnji izpit
+    </button>
+    <button
+      type="button"
+      class="add-izpit btn btn-outline-success"
+      (click)="addIzpit()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-plus-circle-fill"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"
+        />
+      </svg>
+      Dodaj Izpit
+    </button>
+  </div>
+  <!-- Finish buttons -->
+  <button class="btn btn-light" type="button" (click)="downloadAsPdf()">
+    Save to .pdf
+  </button>
+  <button class="btn btn-primary" type="submit">
+    {{ submitButtonIme }}
+  </button>
+  <div class="alert alert-danger mt-3" role="alert" id="obrazec-fail-alert">
+    {{ errorMessage }}
+  </div>
+</form>

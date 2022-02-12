@@ -1,0 +1,47 @@
+#success-alert {
+  display: none;
+}
+
+.obrazci {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  margin-top: 5em;
+}
+
+.obrazci-form {
+  width: 90%;
+  padding: 2em;
+  border: 1px solid rgb(211, 211, 211);
+  border-radius: 6px;
+}
+
+.obrazci-table {
+  width: 100%;
+  box-shadow: 0;
+}
+
+.search-label {
+  display: none;
+}
+
+.table-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchInput {
+  width: 30%;
+
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  width: 100%;
+  text-align: center;
+}
+

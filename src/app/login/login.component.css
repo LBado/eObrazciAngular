@@ -1,0 +1,26 @@
+#login-fail-alert {
+  display: none;
+}
+.login {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 400px;
+}
+
+.button-container {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+}
+
+.button-container button {
+  margin: 2px;
+}
